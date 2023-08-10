@@ -73,7 +73,7 @@ def train(opt):
         t1 = time.time()
         print('loss=%.4f (took %.2f sec)/n' % (epoch_loss, t1-t0))
         lr_scheduler.step()
-        
+
         # validation
         val_epoch_loss, accuracy = val_one_epoch(val_dataloader, model, loss_fn, device)
         print('[validation] loss=%.4f, accuracy=%.4f' %(val_epoch_loss, accuracy))
@@ -131,7 +131,7 @@ def train_one_epoch(train_dataloader, model, loss_fn, optimizer, device):
             print('\t iteration: %d/%d, loee=%.4f' % (i, len(train_dataloader)-1, loss))
         losses.append(loss.item())
     return torch.tensor(losses).mean().item()
-        
+        # temp
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
