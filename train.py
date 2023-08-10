@@ -49,6 +49,10 @@ def train(opt):
     # Loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+
+    #Learning rate scheduler
+    lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+
     #loading a weight file (if exists)
     #weight_file = Path('weights')/(name + '.pth')
     weight_file = Path('weights')/opt.weight
@@ -68,9 +72,12 @@ def train(opt):
         epoch_loss = train_one_epoch(train_dataloader, model, loss_fn, optimizer, device)
         t1 = time.time()
         print('loss=%.4f (took %.2f sec)/n' % (epoch_loss, t1-t0))
+        lr_scheduler.step()
+        
         # validation
         val_epoch_loss, accuracy = val_one_epoch(val_dataloader, model, loss_fn, device)
         print('[validation] loss=%.4f, accuracy=%.4f' %(val_epoch_loss, accuracy))
+       
 
         #saving the best status into a weight file
         if accuracy > best_accuracy:
